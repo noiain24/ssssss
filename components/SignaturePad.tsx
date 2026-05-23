@@ -72,7 +72,7 @@ const SignaturePad = forwardRef<SignaturePadRef, SignaturePadProps>(
           className="w-full"
         >
           <Eraser className="w-4 h-4 mr-2" />
-          Clear Signature
+          ล้างลายเซ็น
         </Button>
       </div>
     )

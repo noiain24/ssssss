@@ -20,7 +20,12 @@ import {
   AlertCircle, 
   Clock,
   Monitor,
-  Building2
+  Building2,
+  Mic,
+  Speaker,
+  Tv,
+  Cable,
+  HelpCircle
 } from 'lucide-react'
 
 interface DashboardProps {
@@ -63,11 +68,29 @@ export default function Dashboard({ records }: DashboardProps) {
   const getStatusBadge = (status: RepairRecord['status']) => {
     switch (status) {
       case 'repaired':
-        return <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-200">Repaired</Badge>
+        return <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-200">ซ่อมเสร็จสิ้น</Badge>
       case 'pending':
-        return <Badge className="bg-amber-500/10 text-amber-600 border-amber-200">Pending</Badge>
+        return <Badge className="bg-amber-500/10 text-amber-600 border-amber-200">รอดำเนินการ</Badge>
       case 'cannot-repair':
-        return <Badge className="bg-red-500/10 text-red-600 border-red-200">Cannot Repair</Badge>
+        return <Badge className="bg-red-500/10 text-red-600 border-red-200">ไม่สามารถซ่อมได้</Badge>
+    }
+  }
+
+  const getEquipmentIcon = (type: string) => {
+    switch (type) {
+      case 'PC':
+        return <Monitor className="w-5 h-5 text-primary" />
+      case 'Mic':
+        return <Mic className="w-5 h-5 text-primary" />
+      case 'Speaker':
+        return <Speaker className="w-5 h-5 text-primary" />
+      case 'TV':
+        return <Tv className="w-5 h-5 text-primary" />
+      case 'Cable':
+        return <Cable className="w-5 h-5 text-primary" />
+      case 'Others':
+      default:
+        return <HelpCircle className="w-5 h-5 text-primary" />
     }
   }
 
@@ -98,7 +121,7 @@ export default function Dashboard({ records }: DashboardProps) {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-blue-600">Total Cases</p>
+                  <p className="text-sm font-medium text-blue-600">รายการแจ้งซ่อมทั้งหมด</p>
                   <p className="text-3xl font-bold text-blue-700">{totalCases}</p>
                 </div>
                 <div className="p-3 bg-blue-500/10 rounded-full">
@@ -114,7 +137,7 @@ export default function Dashboard({ records }: DashboardProps) {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-emerald-600">Repaired</p>
+                  <p className="text-sm font-medium text-emerald-600">ซ่อมเสร็จสิ้น</p>
                   <p className="text-3xl font-bold text-emerald-700">{repairedCases}</p>
                 </div>
                 <div className="p-3 bg-emerald-500/10 rounded-full">
@@ -130,7 +153,7 @@ export default function Dashboard({ records }: DashboardProps) {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-amber-600">Pending</p>
+                  <p className="text-sm font-medium text-amber-600">รอดำเนินการ</p>
                   <p className="text-3xl font-bold text-amber-700">{pendingCases}</p>
                 </div>
                 <div className="p-3 bg-amber-500/10 rounded-full">
@@ -146,7 +169,7 @@ export default function Dashboard({ records }: DashboardProps) {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-red-600">Cannot Repair</p>
+                  <p className="text-sm font-medium text-red-600">ไม่สามารถซ่อมได้</p>
                   <p className="text-3xl font-bold text-red-700">{cannotRepairCases}</p>
                 </div>
                 <div className="p-3 bg-red-500/10 rounded-full">
@@ -165,7 +188,7 @@ export default function Dashboard({ records }: DashboardProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Monitor className="w-5 h-5" />
-                Cases by Equipment Type
+                สถิติการแจ้งซ่อมจำแนกตามประเภทอุปกรณ์
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -191,7 +214,7 @@ export default function Dashboard({ records }: DashboardProps) {
                 </ResponsiveContainer>
               ) : (
                 <div className="h-[250px] flex items-center justify-center text-muted-foreground">
-                  No data available
+                  ไม่มีข้อมูลสถิติ
                 </div>
               )}
             </CardContent>
@@ -203,7 +226,7 @@ export default function Dashboard({ records }: DashboardProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Building2 className="w-5 h-5" />
-                Cases by Room Number
+                สถิติการแจ้งซ่อมจำแนกตามห้องเรียน
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -229,7 +252,7 @@ export default function Dashboard({ records }: DashboardProps) {
                 </ResponsiveContainer>
               ) : (
                 <div className="h-[250px] flex items-center justify-center text-muted-foreground">
-                  No data available
+                  ไม่มีข้อมูลสถิติ
                 </div>
               )}
             </CardContent>
@@ -241,7 +264,7 @@ export default function Dashboard({ records }: DashboardProps) {
       <motion.div variants={itemVariants}>
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Recent Activity</CardTitle>
+            <CardTitle className="text-lg">กิจกรรมแจ้งซ่อมล่าสุด</CardTitle>
           </CardHeader>
           <CardContent>
             {recentActivity.length > 0 ? (
@@ -255,15 +278,13 @@ export default function Dashboard({ records }: DashboardProps) {
                     className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="hidden sm:block w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <span className="text-sm font-medium text-primary">
-                          {record.teacherName.charAt(0).toUpperCase()}
-                        </span>
+                      <div className="hidden sm:flex w-10 h-10 rounded-full bg-primary/10 items-center justify-center">
+                        {getEquipmentIcon(record.equipmentType)}
                       </div>
                       <div>
                         <p className="font-medium">{record.teacherName}</p>
                         <p className="text-sm text-muted-foreground">
-                          Room {record.roomNumber} • {record.equipmentType}
+                          ห้อง {record.roomNumber} • {record.equipmentType}
                         </p>
                       </div>
                     </div>
@@ -273,7 +294,7 @@ export default function Dashboard({ records }: DashboardProps) {
               </div>
             ) : (
               <div className="text-center py-8 text-muted-foreground">
-                No recent activity
+                ไม่มีกิจกรรมการแจ้งซ่อมล่าสุด
               </div>
             )}
           </CardContent>

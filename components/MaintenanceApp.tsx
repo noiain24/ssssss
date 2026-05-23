@@ -22,8 +22,10 @@ import {
   LayoutDashboard, 
   Table2, 
   Wrench,
-  Loader2
+  Loader2,
+  Calendar
 } from 'lucide-react'
+import ScheduleTodo from '@/components/ScheduleTodo'
 
 export default function MaintenanceApp() {
   const [records, setRecords] = useState<RepairRecord[]>([])
@@ -89,7 +91,7 @@ export default function MaintenanceApp() {
           className="flex flex-col items-center gap-4"
         >
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">กำลังโหลดข้อมูล...</p>
         </motion.div>
       </div>
     )
@@ -111,7 +113,7 @@ export default function MaintenanceApp() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">Smart Classroom</h1>
-                <p className="text-sm text-muted-foreground hidden sm:block">Maintenance System</p>
+                <p className="text-sm text-muted-foreground hidden sm:block">ระบบแจ้งซ่อมและซ่อมบำรุง</p>
               </div>
             </div>
             <Button onClick={handleOpenForm} size="sm" className="gap-2">
@@ -120,7 +122,7 @@ export default function MaintenanceApp() {
               ) : (
                 <Plus className="w-4 h-4" />
               )}
-              <span className="hidden sm:inline">New Report</span>
+              <span className="hidden sm:inline">แจ้งซ่อมใหม่</span>
             </Button>
           </div>
         </div>
@@ -129,14 +131,18 @@ export default function MaintenanceApp() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-[400px] grid-cols-2">
+          <TabsList className="grid w-full max-w-[550px] grid-cols-3">
             <TabsTrigger value="dashboard" className="gap-2">
               <LayoutDashboard className="w-4 h-4" />
-              <span>Dashboard</span>
+              <span>แดชบอร์ด</span>
+            </TabsTrigger>
+            <TabsTrigger value="schedule" className="gap-2">
+              <Calendar className="w-4 h-4" />
+              <span>ตารางงาน & To-Do</span>
             </TabsTrigger>
             <TabsTrigger value="records" className="gap-2">
               <Table2 className="w-4 h-4" />
-              <span>Records</span>
+              <span>ประวัติแจ้งซ่อม</span>
             </TabsTrigger>
           </TabsList>
 
@@ -148,6 +154,20 @@ export default function MaintenanceApp() {
               transition={{ duration: 0.2 }}
             >
               <Dashboard records={records} />
+            </motion.div>
+          </TabsContent>
+
+          <TabsContent value="schedule" className="mt-0">
+            <motion.div
+              key="schedule"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ScheduleTodo 
+                records={records} 
+                onEdit={handleEdit}
+              />
             </motion.div>
           </TabsContent>
 
@@ -180,7 +200,7 @@ export default function MaintenanceApp() {
       <footer className="border-t mt-auto">
         <div className="container mx-auto px-4 py-4">
           <p className="text-center text-sm text-muted-foreground">
-            Smart Classroom Maintenance System • Powered by React
+            ระบบแจ้งซ่อมห้องเรียนอัจฉริยะ Smart Classroom • พัฒนาด้วย React
           </p>
         </div>
       </footer>

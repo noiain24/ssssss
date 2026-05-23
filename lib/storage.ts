@@ -71,6 +71,7 @@ export async function syncToSheetDB(record: RepairRecord): Promise<boolean> {
           'รายละเอียดการซ่อม / แนวทางแก้ไข': record.repairDetails,
           'ชื่อครูผู้ใช้ห้อง / ผู้รับทราบ': record.teacherName,
           'ลายเซ็นต์': record.signature || '',
+          'รูปภาพ': record.photo || '',
           'id': record.id,
         }]
       }),
@@ -100,6 +101,7 @@ export async function updateSheetDBRecord(record: RepairRecord): Promise<boolean
           'รายละเอียดการซ่อม / แนวทางแก้ไข': record.repairDetails,
           'ชื่อครูผู้ใช้ห้อง / ผู้รับทราบ': record.teacherName,
           'ลายเซ็นต์': record.signature || '',
+          'รูปภาพ': record.photo || '',
         }
       }),
     })
